@@ -20,4 +20,12 @@ class BookController(private val bookService: BookService) {
         val savedBook = bookService.addBook(book)
         return savedBook.toResponse()
     }
+
+    // New retrieveAllBooks method
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    fun retrieveAllBooks(): List<BookResponse> {
+        val books = bookService.retrieveAllBooks()
+        return books.map { it.toResponse() }
+    }
 }
