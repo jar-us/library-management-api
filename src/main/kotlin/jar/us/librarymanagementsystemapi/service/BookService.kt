@@ -16,4 +16,9 @@ class BookService(private val bookRepository: BookRepository) {
         }
         return bookRepository.save(book)
     }
+
+    fun retrieveAllBooks(): List<Book> {
+        return bookRepository.findAll()
+    }
+
 }
