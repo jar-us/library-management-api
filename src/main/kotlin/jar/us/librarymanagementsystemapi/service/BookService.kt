@@ -21,4 +21,10 @@ class BookService(private val bookRepository: BookRepository) {
         return bookRepository.findAll()
     }
 
+    fun retrieveBookById(id: Long): Book {
+        return bookRepository.findById(id).orElseThrow {
+            ResponseStatusException(HttpStatus.NOT_FOUND, "Book with ID $id not found")
+        }
+    }
+
 }
