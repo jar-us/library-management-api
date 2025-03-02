@@ -28,4 +28,12 @@ class BookController(private val bookService: BookService) {
         val books = bookService.retrieveAllBooks()
         return books.map { it.toResponse() }
     }
+
+    // New method to retrieve a book by ID
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun retrieveBookById(@PathVariable id: Long): BookResponse {
+        val book = bookService.retrieveBookById(id)
+        return book.toResponse()
+    }
 }
