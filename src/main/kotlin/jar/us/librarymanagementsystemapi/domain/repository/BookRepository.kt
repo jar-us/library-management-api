@@ -12,4 +12,6 @@ interface BookRepository {
     fun findByTitleContainingIgnoreCase(title: String): List<Book>
     fun findByAuthorContainingIgnoreCase(author: String): List<Book>
     fun findByGenre(genre: String): List<Book>
+    fun deleteAll()
+    fun saveAll(books: List<Book>): List<Book>
 }

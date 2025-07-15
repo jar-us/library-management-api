@@ -43,4 +43,8 @@ class BookRepositoryImpl(
         jpaBookRepository.findByAuthorContainingIgnoreCase(author)
 
     override fun findByGenre(genre: String): List<Book> = jpaBookRepository.findByGenre(genre)
+
+    override fun deleteAll() = jpaBookRepository.deleteAll()
+
+    override fun saveAll(books: List<Book>): List<Book> = jpaBookRepository.saveAll(books)
 }

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/v1/books")
+@RequestMapping("/api/books")
 @CrossOrigin(origins = ["http://localhost:3000", "http://localhost:8080"])
 class BookManagementController(
     private val bookManagementService: BookManagementService,
@@ -68,7 +68,7 @@ class BookManagementController(
 }
 
 @RestController
-@RequestMapping("/api/v1/books/search")
+@RequestMapping("/api/books/search")
 @CrossOrigin(origins = ["http://localhost:3000", "http://localhost:8080"])
 class BookSearchController(
     private val bookManagementService: BookManagementService,
