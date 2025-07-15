@@ -1,37 +1,34 @@
-package jar.us.librarymanagementsystemapi.domain
+package jar.us.librarymanagementsystemapi.application.dto
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.PositiveOrZero
+import jakarta.validation.constraints.Size
 
-@Entity
-data class Book(
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
-
+data class UpdateBookRequestDto(
     @field:NotBlank(message = "Title is required")
+    @field:Size(min = 1, max = 255, message = "Title must be between 1 and 255 characters")
     val title: String,
 
     @field:NotBlank(message = "Author is required")
+    @field:Size(min = 1, max = 255, message = "Author name must be between 1 and 255 characters")
     val author: String,
 
     @field:NotBlank(message = "ISBN is required")
+    @field:Size(min = 10, max = 17, message = "ISBN must be between 10 and 17 characters")
     val isbn: String,
 
     val publicationYear: Int? = null,
 
+    @field:Size(max = 100, message = "Genre must not exceed 100 characters")
     val genre: String? = null,
 
     @field:NotNull(message = "Total copies is required")
-    @field:PositiveOrZero(message = "Total copies must be zero or positive")
+    @field:Positive(message = "Total copies must be greater than 0")
     val totalCopies: Int,
 
     @field:NotNull(message = "Available copies is required")
     @field:PositiveOrZero(message = "Available copies must be zero or positive")
-    val availableCopies: Int,
+    val availableCopies: Int
 )

@@ -1,6 +1,6 @@
 package jar.us.librarymanagementsystemapi.book
 
-import jar.us.librarymanagementsystemapi.schema.BookRequest
+import jar.us.librarymanagementsystemapi.application.dto.CreateBookRequestDto
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -12,7 +12,7 @@ class AddBookTest : AbstractBookControllerTest() {
 
     @Test
     fun `should successfully add a new book`() {
-        val bookRequest = BookRequest(
+        val bookRequest = CreateBookRequestDto(
             title = "The Pragmatic Programmer",
             author = "Andrew Hunt",
             isbn = "9780135957059",
@@ -37,7 +37,7 @@ class AddBookTest : AbstractBookControllerTest() {
 
     @Test
     fun `should return 400 when adding a book with duplicate ISBN`() {
-        val bookRequest = BookRequest(
+        val bookRequest = CreateBookRequestDto(
             title = "Test Book",
             author = "Test Author",
             isbn = "1234567890123",
@@ -62,13 +62,18 @@ class AddBookTest : AbstractBookControllerTest() {
                 .content(objectMapper.writeValueAsString(bookRequest))
         )
             .andExpect(status().isBadRequest)
-            .andExpect(jsonPath("$.error").value("ISBN '1234567890123' already exists"))
+            .andExpect(jsonPath("$.error").value("Book with ISBN '1234567890123' already exists"))
     }
 
     @Test
     fun `should return 400 when adding a book with missing required fields`() {
-        val incompleteRequest = mapOf(
-            "title" to "Incomplete Book" // Missing 'author', 'isbn', 'totalCopies', and 'availableCopies'
+        val incompleteRequest = CreateBookRequestDto(
+            title = "Incomplete Book",
+            author = "", // Missing author
+            isbn = "", // Missing ISBN
+            publicationYear = 2023,
+            totalCopies = 10,
+            availableCopies = 10
         )
 
         mockMvc.perform(
@@ -77,13 +82,13 @@ class AddBookTest : AbstractBookControllerTest() {
                 .content(objectMapper.writeValueAsString(incompleteRequest))
         )
             .andExpect(status().isBadRequest)
-            .andExpect(jsonPath("$.error").exists())
-            .andExpect(jsonPath("$.error").value("Missing or null value for field 'author', which is required.")) // Sample validation message
+            .andExpect(jsonPath("$.fieldErrors.author").exists())
+            .andExpect(jsonPath("$.fieldErrors.isbn").exists())
     }
 
     @Test
     fun `should return 400 when adding a book with invalid data`() {
-        val invalidRequest = BookRequest(
+        val invalidRequest = CreateBookRequestDto(
             title = "", // Invalid: empty title
             author = "Valid Author",
             isbn = "12345", // Invalid: ISBN too short
@@ -99,10 +104,9 @@ class AddBookTest : AbstractBookControllerTest() {
                 .content(objectMapper.writeValueAsString(invalidRequest))
         )
             .andExpect(status().isBadRequest)
-            .andExpect(jsonPath("$.error").exists()) // Check if error message exists
-
-            .andExpect(jsonPath("$.error").value(org.hamcrest.Matchers.containsString("Title is required")))
-            .andExpect(jsonPath("$.error").value(org.hamcrest.Matchers.containsString("Available copies must be zero or positive")))
-            .andExpect(jsonPath("$.error").value(org.hamcrest.Matchers.containsString("Total copies must be zero or positive")))
+            .andExpect(jsonPath("$.fieldErrors.title").exists())
+            .andExpect(jsonPath("$.fieldErrors.isbn").exists())
+            .andExpect(jsonPath("$.fieldErrors.totalCopies").exists())
+            .andExpect(jsonPath("$.fieldErrors.availableCopies").exists())
     }
 }

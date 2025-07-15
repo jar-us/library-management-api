@@ -1,6 +1,6 @@
 package jar.us.librarymanagementsystemapi.book
 
-import jar.us.librarymanagementsystemapi.domain.Book
+import jar.us.librarymanagementsystemapi.domain.model.Book
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import kotlin.test.Test

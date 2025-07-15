@@ -2,7 +2,7 @@ package jar.us.librarymanagementsystemapi.book
 
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import jar.us.librarymanagementsystemapi.repository.BookRepository
+import jar.us.librarymanagementsystemapi.domain.repository.BookRepository
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
