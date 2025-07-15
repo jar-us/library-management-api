@@ -32,7 +32,7 @@ class RetrieveBookByIdTest : AbstractBookControllerTest() {
 
     @Test
     fun `should return 404 when book does not exist`() {
-        mockMvc.perform(get("/api/v1/books/999"))
+        mockMvc.perform(get("/api/books/999"))
             .andExpect(status().isNotFound)
             .andExpect(jsonPath("$.error").value("Book with ID 999 not found"))
     }

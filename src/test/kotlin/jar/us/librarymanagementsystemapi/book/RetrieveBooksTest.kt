@@ -36,7 +36,7 @@ class RetrieveBooksTest : AbstractBookControllerTest() {
         )
         bookRepository.saveAll(listOf(book1, book2))
 
-        mockMvc.perform(get("/api/v1/books"))
+        mockMvc.perform(get("/api/books"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.length()").value(2))
             .andExpect(jsonPath("$[0].title").value("Clean Code"))

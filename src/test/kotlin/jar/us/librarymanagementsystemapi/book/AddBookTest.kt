@@ -49,7 +49,7 @@ class AddBookTest : AbstractBookControllerTest() {
 
         // Save the first book
         mockMvc.perform(
-            post("/api/v1/books")
+            post("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookRequest))
         )
@@ -57,28 +57,33 @@ class AddBookTest : AbstractBookControllerTest() {
 
         // Try saving another book with the same ISBN
         mockMvc.perform(
-            post("/api/v1/books")
+            post("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookRequest))
         )
             .andExpect(status().isBadRequest)
-            .andExpect(jsonPath("$.error").value("ISBN '1234567890123' already exists"))
+            .andExpect(jsonPath("$.error").value("Book with ISBN '1234567890123' already exists"))
     }
 
     @Test
     fun `should return 400 when adding a book with missing required fields`() {
-        val incompleteRequest = mapOf(
-            "title" to "Incomplete Book" // Missing 'author', 'isbn', 'totalCopies', and 'availableCopies'
+        val incompleteRequest = CreateBookRequestDto(
+            title = "Incomplete Book",
+            author = "", // Missing author
+            isbn = "", // Missing ISBN
+            publicationYear = 2023,
+            totalCopies = 10,
+            availableCopies = 10
         )
 
         mockMvc.perform(
-            post("/api/v1/books")
+            post("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(incompleteRequest))
         )
             .andExpect(status().isBadRequest)
-            .andExpect(jsonPath("$.error").exists())
-            .andExpect(jsonPath("$.error").value("Missing or null value for field 'author', which is required.")) // Sample validation message
+            .andExpect(jsonPath("$.fieldErrors.author").value("Author is required"))
+            .andExpect(jsonPath("$.fieldErrors.isbn").value("ISBN is required"))
     }
 
     @Test
@@ -94,15 +99,14 @@ class AddBookTest : AbstractBookControllerTest() {
         )
 
         mockMvc.perform(
-            post("/api/v1/books")
+            post("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidRequest))
         )
             .andExpect(status().isBadRequest)
-            .andExpect(jsonPath("$.error").exists()) // Check if error message exists
-
-            .andExpect(jsonPath("$.error").value(org.hamcrest.Matchers.containsString("Title is required")))
-            .andExpect(jsonPath("$.error").value(org.hamcrest.Matchers.containsString("Available copies must be zero or positive")))
-            .andExpect(jsonPath("$.error").value(org.hamcrest.Matchers.containsString("Total copies must be zero or positive")))
+                        .andExpect(jsonPath("$.fieldErrors.title").value("Title must be between 1 and 255 characters"))
+            .andExpect(jsonPath("$.fieldErrors.isbn").value("ISBN must be between 10 and 17 characters"))
+            .andExpect(jsonPath("$.fieldErrors.totalCopies").value("Total copies must be greater than 0"))
+            .andExpect(jsonPath("$.fieldErrors.availableCopies").value("Available copies must be zero or positive"))
     }
 }
