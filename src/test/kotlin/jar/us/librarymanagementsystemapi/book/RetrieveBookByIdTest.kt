@@ -21,7 +21,7 @@ class RetrieveBookByIdTest : AbstractBookControllerTest() {
         )
         val savedBook = bookRepository.save(book)
 
-        mockMvc.perform(get("/api/v1/books/${savedBook.id}"))
+        mockMvc.perform(get("/api/books/${savedBook.id}"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.title").value("Domain-Driven Design"))
             .andExpect(jsonPath("$.author").value("Eric Evans"))
