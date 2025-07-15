@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.PositiveOrZero
 import jakarta.validation.constraints.Size
 
-data class CreateBookRequestDto(
+data class UpdateBookRequestDto(
     @field:NotBlank(message = "Title is required")
     @field:Size(min = 1, max = 255, message = "Title must be between 1 and 255 characters")
     val title: String,
@@ -28,6 +28,7 @@ data class CreateBookRequestDto(
     @field:Positive(message = "Total copies must be greater than 0")
     val totalCopies: Int,
 
+    @field:NotNull(message = "Available copies is required")
     @field:PositiveOrZero(message = "Available copies must be zero or positive")
-    val availableCopies: Int? = null
+    val availableCopies: Int
 )

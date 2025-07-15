@@ -104,7 +104,7 @@ class AddBookTest : AbstractBookControllerTest() {
                 .content(objectMapper.writeValueAsString(invalidRequest))
         )
             .andExpect(status().isBadRequest)
-                        .andExpect(jsonPath("$.fieldErrors.title").value("Title must be between 1 and 255 characters"))
+            .andExpect(jsonPath("$.fieldErrors.title").value("Title is required"))
             .andExpect(jsonPath("$.fieldErrors.isbn").value("ISBN must be between 10 and 17 characters"))
             .andExpect(jsonPath("$.fieldErrors.totalCopies").value("Total copies must be greater than 0"))
             .andExpect(jsonPath("$.fieldErrors.availableCopies").value("Available copies must be zero or positive"))

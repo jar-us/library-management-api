@@ -106,16 +106,3 @@ class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse)
     }
 }
-
-data class ErrorResponse(
-    val error: String,
-    val timestamp: LocalDateTime,
-    val status: Int
-)
-
-data class ValidationErrorResponse(
-    val error: String,
-    val timestamp: LocalDateTime,
-    val status: Int,
-    val fieldErrors: Map<String, String>
-)

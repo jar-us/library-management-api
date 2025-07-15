@@ -14,22 +14,3 @@ data class BookResponseDto(
     val availableCopies: Int,
     val availabilityStatus: AvailabilityStatus
 )
-
-enum class AvailabilityStatus {
-    AVAILABLE,
-    LIMITED,
-    OUT_OF_STOCK
-}
-
-data class BookSearchResultDto(
-    val books: List<BookResponseDto>,
-    val totalCount: Int,
-    val searchTerm: String? = null,
-    val filters: SearchFilters? = null
-)
-
-data class SearchFilters(
-    val genre: String? = null,
-    val author: String? = null,
-    val availableOnly: Boolean = false
-)
