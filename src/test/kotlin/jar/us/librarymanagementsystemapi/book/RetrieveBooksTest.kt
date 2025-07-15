@@ -9,7 +9,7 @@ class RetrieveBooksTest : AbstractBookControllerTest() {
 
     @Test
     fun `should return empty array when no books exist`() {
-        mockMvc.perform(get("/api/v1/books"))
+        mockMvc.perform(get("/api/books"))
             .andExpect(status().isOk)
             .andExpect(content().json("[]"))
     }
