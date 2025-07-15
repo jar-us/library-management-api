@@ -46,7 +46,7 @@ data class Book(
 
     fun isAvailable(): Boolean = availableCopies > 0
 
-    fun hasLimitedAvailability(): Boolean = availableCopies in 1..2
+    fun hasLimitedAvailability(): Boolean = availableCopies in 1..LIMITED_AVAILABILITY_THRESHOLD
 
     fun isOutOfStock(): Boolean = availableCopies == 0
 
@@ -81,6 +81,8 @@ data class Book(
     }
 
     companion object {
+        private const val LIMITED_AVAILABILITY_THRESHOLD = 2
+        
         fun create(
             title: String,
             author: String,

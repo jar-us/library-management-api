@@ -32,6 +32,8 @@ class BookRepositoryImpl(
 
     override fun existsByIsbn(isbn: String): Boolean = jpaBookRepository.existsByIsbn(isbn)
 
+    override fun existsById(id: Long): Boolean = jpaBookRepository.existsById(id)
+
     override fun deleteById(id: Long) = jpaBookRepository.deleteById(id)
 
     override fun findByIsbn(isbn: String): Book? = jpaBookRepository.findByIsbn(isbn)

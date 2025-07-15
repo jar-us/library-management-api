@@ -7,6 +7,7 @@ interface BookRepository {
     fun findById(id: Long): Book?
     fun findAll(): List<Book>
     fun existsByIsbn(isbn: String): Boolean
+    fun existsById(id: Long): Boolean
     fun deleteById(id: Long)
     fun findByIsbn(isbn: String): Book?
     fun findByTitleContainingIgnoreCase(title: String): List<Book>

@@ -50,7 +50,7 @@ class BookManagementServiceImpl(
     }
 
     override fun deleteBook(id: Long): Boolean {
-        return if (bookRepository.findById(id) != null) {
+        return if (bookRepository.existsById(id)) {
             bookRepository.deleteById(id)
             true
         } else {

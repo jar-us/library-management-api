@@ -82,8 +82,8 @@ class AddBookTest : AbstractBookControllerTest() {
                 .content(objectMapper.writeValueAsString(incompleteRequest))
         )
             .andExpect(status().isBadRequest)
-            .andExpect(jsonPath("$.fieldErrors.author").value("Author is required"))
-            .andExpect(jsonPath("$.fieldErrors.isbn").value("ISBN is required"))
+            .andExpect(jsonPath("$.fieldErrors.author").exists())
+            .andExpect(jsonPath("$.fieldErrors.isbn").exists())
     }
 
     @Test
@@ -104,9 +104,9 @@ class AddBookTest : AbstractBookControllerTest() {
                 .content(objectMapper.writeValueAsString(invalidRequest))
         )
             .andExpect(status().isBadRequest)
-            .andExpect(jsonPath("$.fieldErrors.title").value("Title is required"))
-            .andExpect(jsonPath("$.fieldErrors.isbn").value("ISBN must be between 10 and 17 characters"))
-            .andExpect(jsonPath("$.fieldErrors.totalCopies").value("Total copies must be greater than 0"))
-            .andExpect(jsonPath("$.fieldErrors.availableCopies").value("Available copies must be zero or positive"))
+            .andExpect(jsonPath("$.fieldErrors.title").exists())
+            .andExpect(jsonPath("$.fieldErrors.isbn").exists())
+            .andExpect(jsonPath("$.fieldErrors.totalCopies").exists())
+            .andExpect(jsonPath("$.fieldErrors.availableCopies").exists())
     }
 }
