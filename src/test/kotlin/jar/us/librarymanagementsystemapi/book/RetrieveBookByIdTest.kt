@@ -1,6 +1,6 @@
 package jar.us.librarymanagementsystemapi.book
 
-import jar.us.librarymanagementsystemapi.domain.Book
+import jar.us.librarymanagementsystemapi.domain.model.Book
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -21,7 +21,7 @@ class RetrieveBookByIdTest : AbstractBookControllerTest() {
         )
         val savedBook = bookRepository.save(book)
 
-        mockMvc.perform(get("/api/books/${savedBook.id}"))
+        mockMvc.perform(get("/api/v1/books/${savedBook.id}"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.title").value("Domain-Driven Design"))
             .andExpect(jsonPath("$.author").value("Eric Evans"))
@@ -32,7 +32,7 @@ class RetrieveBookByIdTest : AbstractBookControllerTest() {
 
     @Test
     fun `should return 404 when book does not exist`() {
-        mockMvc.perform(get("/api/books/999"))
+        mockMvc.perform(get("/api/v1/books/999"))
             .andExpect(status().isNotFound)
             .andExpect(jsonPath("$.error").value("Book with ID 999 not found"))
     }

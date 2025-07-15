@@ -1,6 +1,6 @@
 package jar.us.librarymanagementsystemapi.book
 
-import jar.us.librarymanagementsystemapi.domain.Book
+import jar.us.librarymanagementsystemapi.domain.model.Book
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import kotlin.test.Test
@@ -9,7 +9,7 @@ class RetrieveBooksTest : AbstractBookControllerTest() {
 
     @Test
     fun `should return empty array when no books exist`() {
-        mockMvc.perform(get("/api/books"))
+        mockMvc.perform(get("/api/v1/books"))
             .andExpect(status().isOk)
             .andExpect(content().json("[]"))
     }
@@ -36,7 +36,7 @@ class RetrieveBooksTest : AbstractBookControllerTest() {
         )
         bookRepository.saveAll(listOf(book1, book2))
 
-        mockMvc.perform(get("/api/books"))
+        mockMvc.perform(get("/api/v1/books"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.length()").value(2))
             .andExpect(jsonPath("$[0].title").value("Clean Code"))

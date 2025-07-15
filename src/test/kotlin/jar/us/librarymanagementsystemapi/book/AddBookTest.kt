@@ -1,6 +1,6 @@
 package jar.us.librarymanagementsystemapi.book
 
-import jar.us.librarymanagementsystemapi.schema.BookRequest
+import jar.us.librarymanagementsystemapi.application.dto.CreateBookRequestDto
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -12,7 +12,7 @@ class AddBookTest : AbstractBookControllerTest() {
 
     @Test
     fun `should successfully add a new book`() {
-        val bookRequest = BookRequest(
+        val bookRequest = CreateBookRequestDto(
             title = "The Pragmatic Programmer",
             author = "Andrew Hunt",
             isbn = "9780135957059",
@@ -23,7 +23,7 @@ class AddBookTest : AbstractBookControllerTest() {
         )
 
         mockMvc.perform(
-            post("/api/books")
+            post("/api/v1/books")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookRequest))
         )
@@ -37,7 +37,7 @@ class AddBookTest : AbstractBookControllerTest() {
 
     @Test
     fun `should return 400 when adding a book with duplicate ISBN`() {
-        val bookRequest = BookRequest(
+        val bookRequest = CreateBookRequestDto(
             title = "Test Book",
             author = "Test Author",
             isbn = "1234567890123",
@@ -49,7 +49,7 @@ class AddBookTest : AbstractBookControllerTest() {
 
         // Save the first book
         mockMvc.perform(
-            post("/api/books")
+            post("/api/v1/books")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookRequest))
         )
@@ -57,7 +57,7 @@ class AddBookTest : AbstractBookControllerTest() {
 
         // Try saving another book with the same ISBN
         mockMvc.perform(
-            post("/api/books")
+            post("/api/v1/books")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookRequest))
         )
@@ -72,7 +72,7 @@ class AddBookTest : AbstractBookControllerTest() {
         )
 
         mockMvc.perform(
-            post("/api/books")
+            post("/api/v1/books")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(incompleteRequest))
         )
@@ -83,7 +83,7 @@ class AddBookTest : AbstractBookControllerTest() {
 
     @Test
     fun `should return 400 when adding a book with invalid data`() {
-        val invalidRequest = BookRequest(
+        val invalidRequest = CreateBookRequestDto(
             title = "", // Invalid: empty title
             author = "Valid Author",
             isbn = "12345", // Invalid: ISBN too short
@@ -94,7 +94,7 @@ class AddBookTest : AbstractBookControllerTest() {
         )
 
         mockMvc.perform(
-            post("/api/books")
+            post("/api/v1/books")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidRequest))
         )
