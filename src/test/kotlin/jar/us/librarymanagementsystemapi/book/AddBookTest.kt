@@ -23,7 +23,7 @@ class AddBookTest : AbstractBookControllerTest() {
         )
 
         mockMvc.perform(
-            post("/api/v1/books")
+            post("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bookRequest))
         )
