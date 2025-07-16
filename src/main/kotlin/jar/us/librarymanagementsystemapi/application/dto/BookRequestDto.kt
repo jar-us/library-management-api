@@ -1,10 +1,6 @@
 package jar.us.librarymanagementsystemapi.application.dto
 
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
-import jakarta.validation.constraints.Positive
-import jakarta.validation.constraints.PositiveOrZero
-import jakarta.validation.constraints.Size
+import jakarta.validation.constraints.*
 
 data class CreateBookRequestDto(
     @field:NotBlank(message = "Title is required")
@@ -29,5 +25,5 @@ data class CreateBookRequestDto(
     val totalCopies: Int,
 
     @field:PositiveOrZero(message = "Available copies must be zero or positive")
-    val availableCopies: Int? = null
+    val availableCopies: Int? = null,
 )
