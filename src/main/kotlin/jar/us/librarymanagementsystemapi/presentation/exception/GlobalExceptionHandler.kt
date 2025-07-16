@@ -2,6 +2,7 @@ package jar.us.librarymanagementsystemapi.presentation.exception
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import jar.us.librarymanagementsystemapi.domain.exception.BookBusinessException
+import jar.us.librarymanagementsystemapi.domain.exception.UserBusinessException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -35,6 +36,32 @@ class GlobalExceptionHandler {
         
         val errorResponse = ErrorResponse(
             error = ex.message ?: "Business rule violation",
+            timestamp = LocalDateTime.now(),
+            status = HttpStatus.BAD_REQUEST.value()
+        )
+        
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse)
+    }
+
+    @ExceptionHandler(UserNotFoundException::class)
+    fun handleUserNotFoundException(ex: UserNotFoundException): ResponseEntity<ErrorResponse> {
+        logger.info("User not found: {}", ex.message)
+        
+        val errorResponse = ErrorResponse(
+            error = ex.message ?: "User not found",
+            timestamp = LocalDateTime.now(),
+            status = HttpStatus.NOT_FOUND.value()
+        )
+        
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse)
+    }
+
+    @ExceptionHandler(UserBusinessException::class)
+    fun handleUserBusinessException(ex: UserBusinessException): ResponseEntity<ErrorResponse> {
+        logger.warn("User business rule violation: {}", ex.message)
+        
+        val errorResponse = ErrorResponse(
+            error = ex.message ?: "User business rule violation",
             timestamp = LocalDateTime.now(),
             status = HttpStatus.BAD_REQUEST.value()
         )
